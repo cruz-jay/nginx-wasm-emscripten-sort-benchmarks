@@ -1,0 +1,58 @@
+<!doctype html>
+<html>
+  <head>
+    <link rel="stylesheet" href="styles.css" />
+    <meta charset="utf-8" />
+    <title>Sort Benchmarks</title>
+    <style>
+      body { font-family: monospace; padding: 1rem; }
+      table { border-collapse: collapse; }
+      td, th { border: 1px solid #888; padding: 4px 10px; text-align: right; }
+    </style>
+  </head>
+  <body>
+    <button id="run">Run Benchmarks</button>
+    <pre id="status"></pre>
+    <table id="results">
+      <thead>
+        <tr>
+          <th>Size</th><th>Bubble</th><th>Selection</th><th>Insertion</th>
+          <th>std::sort</th><th>Seq Search</th><th>Bin Search</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+
+    <script type="module">
+      import createModule from "./bench.js";
+
+      const status = document.getElementById("status");
+      const tbody = document.querySelector("#results tbody");
+
+      status.textContent = "Loading wasm...";
+      const Module = await createModule();
+      const run = Module.cwrap("run_benchmark", "string", ["number"]);
+      status.textContent = "Ready.";
+
+      document.getElementById("run").onclick = async () => {
+        tbody.innerHTML = "";
+        for (const size of [2000, 4000, 8000, 16000, 32000, 64000]) {
+          status.textContent = `Running size ${size}...`;
+          await new Promise((r) => setTimeout(r, 0));
+          const r = JSON.parse(run(size));
+          const row = document.createElement("tr");
+          row.innerHTML = `
+            <td>${r.size}</td>
+            <td>${r.bubble_ms.toFixed(2)}</td>
+            <td>${r.selection_ms.toFixed(2)}</td>
+            <td>${r.insertion_ms.toFixed(2)}</td>
+            <td>${r.std_sort_ms.toFixed(4)}</td>
+            <td>${r.seq_search_ms.toFixed(4)}</td>
+            <td>${r.bin_search_ms.toFixed(4)}</td>`;
+          tbody.appendChild(row);
+        }
+        status.textContent = "Done.";
+      };
+    </script>
+  </body>
+</html>
