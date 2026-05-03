@@ -1,23 +1,33 @@
 <!doctype html>
 <html>
   <head>
-    <link rel="stylesheet" href="styles.css" />
     <meta charset="utf-8" />
     <title>Sort Benchmarks</title>
-    <style>
-      body { font-family: monospace; padding: 1rem; }
-      table { border-collapse: collapse; }
-      td, th { border: 1px solid #888; padding: 4px 10px; text-align: right; }
-    </style>
+    <link rel="stylesheet" href="styles.css" />
+    <link rel="icon" href="./favicon.ico" />
   </head>
   <body>
-    <button id="run">Run Benchmarks</button>
+    <div class="button-bar">
+      <button id="run">Run Benchmarks</button>
+      <a
+        class="btn-repo"
+        href="https://github.com/cruz-jay/nginx-wasm-emscripten-sort-benchmarks"
+        target="_blank"
+        rel="noopener noreferrer"
+        >GitHub Repo</a
+      >
+    </div>
     <pre id="status"></pre>
     <table id="results">
       <thead>
         <tr>
-          <th>Size</th><th>Bubble</th><th>Selection</th><th>Insertion</th>
-          <th>std::sort</th><th>Seq Search</th><th>Bin Search</th>
+          <th>Size</th>
+          <th>Bubble</th>
+          <th>Selection</th>
+          <th>Insertion</th>
+          <th>std::sort</th>
+          <th>Seq Search</th>
+          <th>Bin Search</th>
         </tr>
       </thead>
       <tbody></tbody>
